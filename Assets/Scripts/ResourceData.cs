@@ -9,11 +9,12 @@ public class ResourceData : MonoBehaviour {
     {
         if (other.gameObject.tag =="Player")
         {
-            goldAmount -= 2;
-            if (goldAmount == 0)
-            {
-                Destroy(this.gameObject);
-            }
+            Destroy(this.gameObject);
+            //goldAmount -= 2;
+            //if (goldAmount == 0)
+            //{
+              
+            //}
            
         }
     }

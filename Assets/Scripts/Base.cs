@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace AI.BehaviourTree
 {
-    public class Resource : MonoBehaviour
+    public class Base : MonoBehaviour
     {
 
     }

@@ -7,19 +7,17 @@ namespace AI.BehaviourTree
 
     public class AIBot_BehaviourTree : MonoBehaviour
     {
-
         public int playerCurrentResource;
         public ResourceData resourceDataRef;
 
         private Task rootTask;
-
-        // Use this for initialization
+       
         void Awake()
         {
-            
+
             BlackBoard blackBoardRef = GetComponent<BlackBoard>();
 
-           resourceDataRef= GameObject.FindGameObjectWithTag("ResourceGold").GetComponent<ResourceData>();
+            resourceDataRef = GameObject.FindGameObjectWithTag("ResourceGold").GetComponent<ResourceData>();
 
             // Create the Nodes
 
@@ -29,17 +27,55 @@ namespace AI.BehaviourTree
             var seqResourceTask = new SequenceTask();
             seqResourceTask.blackboardRef = blackBoardRef;
 
+            var seqBaseTask = new SequenceTask();
+            seqBaseTask.blackboardRef = blackBoardRef;
 
             var moveToResource = new MoveToResourceTask();
             moveToResource.blackboardRef = blackBoardRef;
+
+            var moveToBase = new MoveToBaseTask();
+            moveToBase.blackboardRef = blackBoardRef;
+
+            var notTask = new NotTask();
+            notTask.blackboardRef = blackBoardRef;
+
+            var hasResourceTask = new HasResources();
+            hasResourceTask.blackboardRef = blackBoardRef;
+
+            var playerBaseCloseTask = new PlayerBaseIsCloseTask();
+            playerBaseCloseTask.blackboardRef = blackBoardRef;
+
+            var stayTask = new StayStillTask();
+            stayTask.blackboardRef = blackBoardRef;
+
+            var forTask = new ForTask();
+            forTask.blackboardRef = blackBoardRef;
+
+            var waitTask = new WaitTask();
+            waitTask.blackboardRef = blackBoardRef;
+
+            var goldTask = new Gold();
+            goldTask.blackboardRef = blackBoardRef;
 
 
             //Connect the nodes to generate the tree
             rootTask = mainSelTask;
             mainSelTask.children.Add(seqResourceTask);
+            mainSelTask.children.Add(seqBaseTask);
+            mainSelTask.children.Add(moveToBase);
+
+            seqResourceTask.children.Add(notTask);
+            notTask.children.Add(hasResourceTask);
             seqResourceTask.children.Add(moveToResource);
-            
-           
+
+            seqBaseTask.children.Add(playerBaseCloseTask);
+            seqBaseTask.children.Add(stayTask);
+            seqBaseTask.children.Add(forTask);
+
+            forTask.children.Add(waitTask);
+            waitTask.children.Add(goldTask);
+
+
         }
         public void Start()
         {
@@ -60,8 +96,9 @@ namespace AI.BehaviourTree
         public void OnTriggerEnter(Collider other)
         {
             if (other.GetComponent<Resource>())
-            {              
-               this.playerCurrentResource += 10;
+            {
+                this.playerCurrentResource += 10;
+
             }
         }
 
@@ -69,7 +106,7 @@ namespace AI.BehaviourTree
         {
             if (this.playerCurrentResource > 0)
             {
-                this.playerCurrentResource += 2;
+                this.playerCurrentResource -= 1;
                 Debug.Log("Stealing");
             }
         }

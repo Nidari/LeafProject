@@ -12,6 +12,7 @@ namespace AI.BehaviourTree
 
         public BotMovement botMovementRef;
         public AIBot_BehaviourTree bot;
+        public PlayerBase playerBase;
      
     }
 }
