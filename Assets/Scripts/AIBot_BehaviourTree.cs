@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 
 namespace AI.BehaviourTree
@@ -9,6 +10,7 @@ namespace AI.BehaviourTree
     {
         public int playerCurrentResource;
         public ResourceData resourceDataRef;
+    
 
         private Task rootTask;
        
@@ -97,7 +99,7 @@ namespace AI.BehaviourTree
         {
             if (other.GetComponent<Resource>())
             {
-                this.playerCurrentResource += 10;
+                this.playerCurrentResource += 3;
 
             }
         }
